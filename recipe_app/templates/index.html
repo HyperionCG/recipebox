@@ -1,1 +1,14 @@
 <h1>I THINK THERFORE I AM</h1>
+
+{% for a in authors %}
+    {{a.name}},
+{% endfor %}
+<ul>
+    {% for r in recipes %}
+        <li>{{r.title}} by {{r.author.name}}</li>
+        <ul>
+            <li>{{r.time_required}}</li>
+            <li>{{r.description}}</li>
+        </ul>
+    {% endfor %}
+</ul>
