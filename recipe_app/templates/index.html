@@ -1,1 +1,6 @@
-<h1>I THINK THERFORE I AM</h1>
+
+<ul>
+    {% for r in recipes %}
+        <li><a href="recipe/{{r.id}}">{{r.title}}</a></li>
+    {% endfor %}
+</ul>
