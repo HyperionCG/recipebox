@@ -1,7 +1,13 @@
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, HttpResponseRedirect
 from recipe_app.models import Author, Recipe
-from recipe_app.forms import recipe_form, author_form
-from django.http import HttpResponseRedirect
+from recipe_app.forms import recipe_form, author_form, login_form
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
+from recipe_app.handle_forms import *
+
+def login_view(request):
+    form = login_form()
+    return render(request, 'standard_form.html', {'form': form})
 
 # Create your views here.
 def index(request):
@@ -21,30 +27,22 @@ def author_page(request, id):
     )
 
 def add_recipe_form(request):
-    if request.method == 'POST':
-        form = recipe_form(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            Recipe.objects.create(
-                title=data['title'],
-                time_required=data['time_required'],
-                description=data['description'],
-                instructions=data['instructions'],
-                author=data['author']
-            )
-            return HttpResponseRedirect(reverse('home'))
     form = recipe_form()
-    return render(request, 'recipe_form.html', {'form': form})
+    return render(request, 'standard_form.html', {'form': form})
 
+def handle_standard_form(request, form_type):
+    types = {
+        "author_form": handle_author(request),
+        "recipe_form": handle_recipe(request),
+        "login": handle_login(request)
+        }
+    return types[form_type]
+
+@login_required
 def add_author_form(request):
-    if request.method == 'POST':
-        form = author_form(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            Author.objects.create(
-                name=data['name'],
-                bio=data['bio']
-            )
-            return HttpResponseRedirect(reverse('home'))
     form = author_form()
-    return render(request, 'author_form.html', {'form': form})
+    return render(request, 'standard_form.html', {'form': form})
+
+def logout_user(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('login'))
