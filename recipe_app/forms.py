@@ -13,6 +13,9 @@ class author_form(forms.Form):
     name = forms.CharField(max_length=50)
     bio = forms.CharField(widget=forms.Textarea)
 
+class login_form(forms.Form):
+    username = forms.CharField(max_length=50)
+    password = forms.CharField(widget=forms.PasswordInput)
 
 """class Author(models.Model):
     name = models.CharField(max_length=50)

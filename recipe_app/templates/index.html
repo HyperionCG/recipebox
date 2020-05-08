@@ -1,8 +1,25 @@
-<h1>Recipe Box</h1>
-<h2><a href="/author_form/">Create Author</a></h2>
-<h2 style="margin-left:3em"><a href="/recipe_form/">Create Recipe</a></h2>
-<ul>
-    {% for r in recipes %}
-        <li><a href="recipe/{{r.id}}">{{r.title}}</a></li>
-    {% endfor %}
-</ul>
+
+<html>
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "homepage.css" %}">
+</head>
+<body>
+    <div class="head-nav">
+        <h1 class="home-title">Recipe Box</h1>
+        <div class="create-bar">
+            <p>Logged in?: {{ request.user.is_authenticated}}</p>
+            <h2><a href="/author_form/">Create Author</a></h2>
+            <h2><a href="/recipe_form/">Create Recipe</a></h2>
+            <p><a href="/logout/">Logout</a></p>
+        </div>
+    </div>
+    
+    
+    <ul>
+        {% for r in recipes %}
+            <li><a href="recipe/{{r.id}}">{{r.title}}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
