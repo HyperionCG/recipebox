@@ -6,6 +6,7 @@ class Author(models.Model):
     name = models.CharField(max_length=50)
     bio = models.TextField()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    favorite = models.models.ManyToManyField("Recipe", related_name=_("favorite"), blank=True)
     def __str__(self):
         return self.name
 

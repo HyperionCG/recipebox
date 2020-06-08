@@ -46,3 +46,33 @@ def add_author_form(request):
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect(reverse('login'))
+
+@login_required
+def edit_view(request, id):
+    recipe = Recipe.objects.get(id=id)
+    if request.method == "POST":
+        form = recipe_form(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            recipe.title = data['title']
+            recipe.description = data['description']
+            file.save()
+            return HttpResponseRedirect(reverse('', args=(id)))
+
+        form = recipe_form(initial={
+            'title': file.title,
+            'description': file.description
+        })
+        return render(request, "recipe_page.htm", {'form': form})
+
+@login_required
+def add_favorite(request, id):
+    recipe = Recipe.objects.get(id=id)
+    request.user.author.favorites.add(recipe)
+    return HttpResponseRedirect(reverse("recipe",args=(id,)))
+
+@login_required
+def unadd_favorite(request,id):
+    recipe = Recipe.objects.get(id=id)
+    request.user.author.favorites.remove(recipe)
+    return HttpResponseRedirect(reverse("recipe",args=(id,)))
