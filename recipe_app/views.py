@@ -63,8 +63,11 @@ def edit_view(request, id):
             return HttpResponseRedirect(reverse('', args=(id)))
 
         form = recipe_form(initial={
-            'title': file.title,
-            'description': file.description
+            'title': recipe.title,
+            'description': recipe.description
+            'time_required': recipe.time_required
+            'instructions': recipe.instructions
+            'author': recipe.author
         })
         return render(request, "recipe_page.htm", {'form': form})
 
