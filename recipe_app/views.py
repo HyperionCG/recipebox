@@ -56,7 +56,10 @@ def edit_view(request, id):
             data = form.cleaned_data
             recipe.title = data['title']
             recipe.description = data['description']
-            file.save()
+            recipe.time_required = data['time_required']
+            recipe.instructions = data['instructions']
+            recipe.author = data['author']
+            recipe.save()
             return HttpResponseRedirect(reverse('', args=(id)))
 
         form = recipe_form(initial={
